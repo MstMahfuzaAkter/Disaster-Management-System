@@ -1,0 +1,135 @@
+import React, { useRef } from "react";
+import Slider from "react-slick";
+import { motion } from "framer-motion";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+import { Typewriter } from "react-simple-typewriter";
+
+// Slick carousel styles
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+
+const slides = [
+    {
+        title: "Flood Alert: Dhaka",
+        subtitle: "Heavy rains expected. Avoid low-lying areas and follow evacuation routes.",
+        image: "https://i.postimg.cc/ydzMZZ3Q/manchester-rain.jpg",
+        link: "/alerts/flood"
+    },
+    {
+        title: "Cyclone Warning: Chittagong Coast",
+        subtitle: "Cyclone approaching coastal areas. Secure your home and move to safe shelters.",
+        image: "https://i.postimg.cc/D0RH74hm/Cyclone-Debbie-category-4-off-the-coast-of.jpg",
+        link: "/alerts/cyclone"
+    },
+    {
+        title:"Earthquake",
+        subtitle: "Know safe zones and emergency contacts. Stay alert during tremors.",
+        image: "https://i.postimg.cc/28RfpgSX/Earthquake-Symbolism-6-Meanings-in-Dreams-and-the.jpg",
+        link: "/alerts/earthquake"
+    },
+    {
+        title: "Landslide Risk: Sylhet Hills",
+        subtitle: "Heavy rainfall may trigger landslides. Avoid hilly areas until safe.",
+        image: "https://i.postimg.cc/JnDSvQwv/NH-5-blocked-after-landslide-in-Shimla-s-Theog.jpg",
+        link: "/alerts/landslide"
+    },
+    {
+        title: "Tsunami Alert: Cox's Bazar",
+        subtitle: "Undersea earthquake detected. Move to higher ground immediately.",
+        image: "https://i.postimg.cc/prMc7bJ1/A-fishing-boat-pushed-far-inland-by-the-tsunami.jpg",
+        link: "/alerts/tsunami"
+    }
+];
+
+const HeroSlider = () => {
+    const sliderRef = useRef(null);
+
+    const settings = {
+        dots: true,
+        infinite: true,
+        autoplay: true,
+        arrows: false,
+        fade: true,
+        speed: 1000,
+        autoplaySpeed: 4000,
+        slidesToShow: 1,
+        slidesToScroll: 1,
+        appendDots: (dots) => (
+            <div
+                style={{
+                    position: "absolute",
+                    bottom: "20px",
+                    width: "100%",
+                    display: "flex",
+                    justifyContent: "center",
+                }}
+            >
+                <ul className="flex gap-3"> {dots} </ul>
+            </div>
+        ),
+        customPaging: () => (
+            <div className="w-3 h-3 bg-white/60 hover:bg-white rounded-full transition-all duration-300"></div>
+        ),
+    };
+
+    return (
+        <section className="relative overflow-hidden pb-10 rounded-2xl">
+            <Slider ref={sliderRef} {...settings}>
+                {slides.map((slide, i) => (
+                    <div key={i} className="relative h-[80vh]">
+                        <img
+                            src={slide.image}
+                            alt={slide.title}
+                            className="absolute inset-0 w-full h-full object-cover"
+                        />
+                        <div className="absolute inset-0 bg-black/50 flex flex-col justify-center items-center text-center text-white px-4">
+                            <motion.h1
+                                key={`title-${i}`}
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ duration: 0.8 }}
+                                className="text-4xl md:text-6xl font-bold mb-3"
+                            >
+                                <Typewriter
+                                    words={[slide.title]}
+                                    loop={1}
+                                    cursor
+                                    cursorStyle="_"
+                                    typeSpeed={70}
+                                    deleteSpeed={50}
+                                    delaySpeed={2000}
+                                />
+                            </motion.h1>
+                            <motion.p
+                                key={`subtitle-${i}`}
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ duration: 1 }}
+                                className="text-lg md:text-2xl max-w-2xl"
+                            >
+                                {slide.subtitle}
+                            </motion.p>
+                        </div>
+                    </div>
+                ))}
+            </Slider>
+
+            {/* Navigation buttons */}
+            <button
+                onClick={() => sliderRef.current.slickPrev()}
+                className="absolute left-4 top-1/2 -translate-y-1/2 bg-black/40 hover:bg-black/60 text-white p-3 rounded-full transition"
+            >
+                <ChevronLeft size={28} />
+            </button>
+
+            <button
+                onClick={() => sliderRef.current.slickNext()}
+                className="absolute right-4 top-1/2 -translate-y-1/2 bg-black/40 hover:bg-black/60 text-white p-3 rounded-full transition"
+            >
+                <ChevronRight size={28} />
+            </button>
+        </section>
+    );
+};
+
+export default HeroSlider;
